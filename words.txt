@@ -1,4 +1,3 @@
-a
 ability
 able
 about
@@ -37,7 +36,7 @@ already
 also
 although
 always
-American
+american
 among
 amount
 analysis
@@ -566,7 +565,6 @@ note
 nothing
 notice
 now
-n't
 number
 occur
 of
@@ -635,7 +633,6 @@ plan
 plant
 play
 player
-PM
 point
 police
 policy

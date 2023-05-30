@@ -1,6 +1,26 @@
-#main {
-    overflow: wrap;
+input,
+body {
+    background-color: #202124;
+    color: lightgray;
     font-size: 2rem;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%) translateY(-50%);
+}
+
+#text {
+    overflow: wrap;
+    margin-bottom: 1rem;
+    justify-content: center;
 }
 
 .correct {
