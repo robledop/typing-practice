@@ -1,0 +1,17 @@
+#main {
+    overflow: wrap;
+    font-size: 2rem;
+}
+
+.correct {
+    color: #00f600;
+}
+
+.wrong {
+    color: #df0505;
+}
+
+.current {
+    display: inline-block;
+    text-decoration: underline;
+}
