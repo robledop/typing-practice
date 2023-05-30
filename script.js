@@ -120,7 +120,7 @@ async function jumpToNextWord() {
         await init();
     } else {
         if (currentWordWrong) {
-            wordElements[currentWordIndex].classList.add("past-wrong");
+            wordElements[currentWordIndex].classList.add("mistake");
         }
         wordElements[currentWordIndex].classList.add("complete");
         inputElement.value = "";
