@@ -1,9 +1,19 @@
 "use strict";
 
-const textElement = document.querySelector("#text");
+let currentWordIndex = 0;
+let allWords;
+let words;
+let practiceWords;
+let wordElements;
+let currentWordWrong = false;
 const inputElement = document.querySelector("#input");
-let practiceWords = new Map(JSON.parse(localStorage.getItem("practiceWords")));
-let numberOfWordsThatNeedPractice = practiceWords.size;
+const textElement = document.querySelector("#text");
+const headerElement = document.querySelector("#header");
+const footerElement = document.querySelector("#footer");
+let start;
+let end;
+let numberOfWords;
+let wpm;
 
 async function getFile(fileURL) {
     let fileContent = await fetch(fileURL);
@@ -11,59 +21,126 @@ async function getFile(fileURL) {
     return fileContent.split("\n").sort(() => 0.5 - Math.random());
 }
 
-const allWords = await getFile("words.txt");
-const words = allWords.slice(0, 30 - numberOfWordsThatNeedPractice).concat(...practiceWords.keys());
+async function init() {
+    currentWordIndex = 0;
+    inputElement.value = "";
+    allWords = await getFile("words.txt");
+    practiceWords = new Map(JSON.parse(localStorage.getItem("practiceWords")));
+    words = allWords
+        .slice(0, 30 - practiceWords.size)
+        .concat(...practiceWords.keys());
 
-words.forEach((word) => {
-    const wordElement = document.createElement("span");
-    wordElement.classList.add("word");
-    wordElement.innerText = ` ${word} `;
-    textElement.appendChild(wordElement);
-});
+    let numberOfLetters = words.reduce((acc, word) => acc + word.length, 0);
+    numberOfWords = numberOfLetters / 5;
 
-inputElement.focus();
+    console.log(numberOfWords);
+    textElement.innerHTML = "";
 
-const wordElements = document.querySelectorAll("span");
+    words.forEach((word) => {
+        const wordElement = document.createElement("span");
+        wordElement.classList.add("word");
+        wordElement.innerText = ` ${word} `;
+        textElement.appendChild(wordElement);
+    });
 
-let currentWordIndex = 0;
-inputElement.attributes.placeholder.value = `Type the word '${words[currentWordIndex]}'`;
-inputElement.addEventListener("input", (e) => {
+    inputElement.focus();
+    wordElements = document.querySelectorAll("span");
+    inputElement.attributes.placeholder.value = `Type the word '${words[currentWordIndex]}'`;
+
+    setHeader();
+}
+
+await init();
+
+inputElement.addEventListener("input", async (e) => {
     if (e.data === " ") {
         if (inputElement.value.trim() !== words[currentWordIndex]) {
             wordElements[currentWordIndex].classList.add("wrong");
+            currentWordWrong = true;
         } else {
-            wordElements[currentWordIndex].classList.add("correct");
+            if (currentWordWrong) {
+                const currentWord = words[currentWordIndex];
+                let mistakes = practiceWords.get(currentWord) ?? 0;
+                practiceWords.set(currentWord, (mistakes += 2));
+
+                localStorage.setItem(
+                    "practiceWords",
+                    JSON.stringify([...practiceWords])
+                );
+            } else {
+                let mistakes = practiceWords.get(words[currentWordIndex]) ?? 0;
+                if (mistakes > 0) {
+                    practiceWords.set(words[currentWordIndex], --mistakes);
+                    localStorage.setItem(
+                        "practiceWords",
+                        JSON.stringify([...practiceWords])
+                    );
+                }
+                if (mistakes === 0) {
+                    practiceWords.delete(words[currentWordIndex]);
+                    localStorage.setItem(
+                        "practiceWords",
+                        JSON.stringify([...practiceWords])
+                    );
+                }
+            }
+
+            if (currentWordIndex === words.length - 1) {
+                end = performance.now();
+                wpm = Math.round((numberOfWords / (end - start)) * 60000);
+                footerElement.innerText = `You typed ${wpm} words per minute`;
+                await init();
+            } else {
+                if (currentWordWrong) {
+                    wordElements[currentWordIndex].classList.add("past-wrong");
+                }
+                wordElements[currentWordIndex].classList.add("complete");
+                inputElement.value = "";
+                wordElements[currentWordIndex].classList.remove("current");
+                currentWordIndex++;
+                wordElements[currentWordIndex].classList.add("current");
+                inputElement.attributes.placeholder.value = `Type the word '${words[currentWordIndex]}'`;
+            }
+
+            currentWordWrong = false;
+        }
+    } else {
+        if (currentWordIndex === 0 && inputElement.value.length === 1) {
+            start = performance.now();
+            footerElement.innerText = "";
         }
 
-        inputElement.value = "";
-        currentWordIndex++;
-        wordElements[currentWordIndex - 1].classList.remove("current");
-        inputElement.attributes.placeholder.value = `Type the word '${words[currentWordIndex]}'`;
+        wordElements[currentWordIndex].classList.add("current");
+        const currentWord = words[currentWordIndex];
+        const currentInput = inputElement.value;
+        const isCorrect = currentWord.startsWith(currentInput);
+        if (isCorrect) {
+            wordElements[currentWordIndex].classList.remove("wrong");
+            inputElement.classList.remove("wrong");
+        } else {
+            wordElements[currentWordIndex].classList.remove("complete");
+            wordElements[currentWordIndex].classList.add("wrong");
+            inputElement.classList.add("wrong");
+
+            currentWordWrong = true;
+        }
+
+        if (inputElement.value === "") {
+            wordElements[currentWordIndex].classList.remove("complete");
+            wordElements[currentWordIndex].classList.remove("wrong");
+        }
     }
-    wordElements[currentWordIndex].classList.add("current");
-
-    const currentWord = words[currentWordIndex];
-    const currentInput = inputElement.value;
-    const isCorrect = currentWord.startsWith(currentInput);
-    if (isCorrect) {
-        wordElements[currentWordIndex].classList.remove("wrong");
-        inputElement.classList.remove("wrong");
-    } else {
-        wordElements[currentWordIndex].classList.remove("correct");
-        wordElements[currentWordIndex].classList.add("wrong");
-        inputElement.classList.add("wrong");
-
-        let mistakes = practiceWords.get(currentWord) ?? 0;
-        practiceWords.set(currentWord, ++mistakes);
-
-        localStorage.setItem(
-            "practiceWords",
-            JSON.stringify([...practiceWords])
-        );
-    }
-
-    if (inputElement.value === "") {
-        wordElements[currentWordIndex].classList.remove("correct");
-        wordElements[currentWordIndex].classList.remove("wrong");
-    }
+    setHeader();
 });
+
+document.querySelector("body").addEventListener("keydown", (e) => {
+    inputElement.focus();
+});
+
+function setHeader() {
+    if (practiceWords.size > 0) {
+        headerElement.innerText = `Words that need practice: ${practiceWords.size}`;
+    } else {
+        headerElement.innerText = "";
+    }
+}

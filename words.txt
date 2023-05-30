@@ -174,7 +174,7 @@ computer
 concern
 condition
 conference
-Congress
+congress
 consider
 consumer
 contain
@@ -995,3 +995,5 @@ you
 young
 your
 yourself
+don't
+can't

@@ -18,20 +18,43 @@ body {
 }
 
 #text {
-    overflow: wrap;
     margin-bottom: 1rem;
     justify-content: center;
+    position: relative;
 }
 
-.correct {
-    color: #00f600;
+#header {
+    margin-bottom: 1rem;
+    align-self: start;
+    position: relative;
+    font-size: medium;
+}
+
+#footer{
+    margin-top: 1rem;
+    align-self: start;
+    position: relative;
+    font-size: medium;
+}
+
+.complete {
+    color: gray;
 }
 
 .wrong {
     color: #df0505;
 }
 
+.past-wrong {
+    text-decoration: line-through;
+}
+
 .current {
-    display: inline-block;
     text-decoration: underline;
+}
+
+.word{
+    margin-right: 8px;
+    display: inline-block;
+    position: relative;
 }
