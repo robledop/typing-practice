@@ -6,8 +6,8 @@ let words;
 let practiceWords;
 let wordElements;
 let currentWordWrong = false;
-let start;
-let end;
+let startTime;
+let endTime;
 let numberOfWords;
 let numberOfLetters;
 let wpm;
@@ -73,13 +73,9 @@ inputElement.addEventListener("input", async (e) => {
     setHeader();
 });
 
-document.querySelector("body").addEventListener("keydown", (e) => {
-    inputElement.focus();
-});
-
 function checkInput(key) {
     if (currentWordIndex === 0 && inputElement.value.length === 1) {
-        start = performance.now();
+        startTime = performance.now();
         footerElement.innerText = "";
     }
 
@@ -109,8 +105,8 @@ function checkInput(key) {
 
 async function jumpToNextWord() {
     if (currentWordIndex === words.length - 1) {
-        end = performance.now();
-        wpm = Math.round((numberOfWords / (end - start)) * 60000);
+        endTime = performance.now();
+        wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
         let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
         footerElement.innerText = `You typed ${wpm} words per minute with ${accuracy}% accuracy`;
         console.log(
@@ -159,3 +155,7 @@ function setHeader() {
         headerElement.innerText = "";
     }
 }
+
+document.querySelector("body").addEventListener("keydown", (e) => {
+    inputElement.focus();
+});
