@@ -37,7 +37,7 @@ async function init() {
         .concat(...practiceWords.keys())
         .sort(() => 0.5 - Math.random());
 
-    numberOfLetters = words.reduce((acc, word) => acc + word.length, 0);
+    numberOfLetters = words.reduce((acc, word) => acc + word.length, 0) + 30;
     numberOfWords = numberOfLetters / 5;
     textElement.innerHTML = "";
 
