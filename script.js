@@ -63,7 +63,7 @@ inputElement.addEventListener("input", async (e) => {
             wordElements[currentWordIndex].classList.add("wrong");
             currentWordWrong = true;
         } else {
-            checkCurrentWord();
+            saveStatsForCurrentWord();
             await jumpToNextWord();
             currentWordWrong = false;
         }
@@ -105,15 +105,7 @@ function checkInput(key) {
 
 async function jumpToNextWord() {
     if (currentWordIndex === words.length - 1) {
-        endTime = performance.now();
-        wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
-        let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
-        footerElement.innerText = `You typed ${wpm} words per minute with ${accuracy}% accuracy`;
-        console.log(
-            `Number of letters: ${numberOfLetters}, `,
-            `Number of mistakes: ${testMistakes}`
-        );
-        await init();
+        await finishTest();
     } else {
         if (currentWordWrong) {
             wordElements[currentWordIndex].classList.add("mistake");
@@ -127,7 +119,19 @@ async function jumpToNextWord() {
     }
 }
 
-function checkCurrentWord() {
+async function finishTest() {
+    endTime = performance.now();
+    wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
+    let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
+    footerElement.innerText = `You typed ${wpm} words per minute with ${accuracy}% accuracy`;
+    console.log(
+        `Number of letters: ${numberOfLetters}, `,
+        `Number of mistakes: ${testMistakes}`
+    );
+    await init();
+}
+
+function saveStatsForCurrentWord() {
     if (currentWordWrong) {
         const currentWord = words[currentWordIndex];
         let mistakes = practiceWords.get(currentWord) ?? 0;
