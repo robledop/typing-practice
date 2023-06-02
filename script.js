@@ -130,18 +130,14 @@ async function jumpToNextWord() {
 }
 
 async function finishTest() {
-    textElement.style.animationDirection = "reverse";
-    textElement.style.opacity = 0;
     endTime = performance.now();
     wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
     let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
     footerElement.innerText = `You typed ${wpm} words per minute with ${accuracy}% accuracy`;
-    console.log(
-        `Number of letters: ${numberOfLetters}, `,
-        `Number of mistakes: ${testMistakes}`
-    );
 
     inputElement.value = "";
+    textElement.style.animationDirection = "reverse";
+    textElement.style.opacity = 0;
     setTimeout(async () => {
         await init();
     }, 1000);
