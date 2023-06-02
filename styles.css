@@ -5,7 +5,9 @@ body {
     font-size: 2rem;
     font-family: sans-serif;
 }
-
+#input {
+    width: 500px;
+}
 .main {
     display: flex;
     flex-direction: column;
