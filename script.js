@@ -60,6 +60,8 @@ async function init() {
     wordElements = document.querySelectorAll("span");
     inputElement.attributes.placeholder.value = `Type the word '${words[currentWordIndex]}'`;
 
+    textElement.style.animationDirection = "normal";
+    textElement.style.opacity = 1;
     setHeader();
 }
 
@@ -128,6 +130,8 @@ async function jumpToNextWord() {
 }
 
 async function finishTest() {
+    textElement.style.animationDirection = "reverse";
+    textElement.style.opacity = 0;
     endTime = performance.now();
     wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
     let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
@@ -136,7 +140,11 @@ async function finishTest() {
         `Number of letters: ${numberOfLetters}, `,
         `Number of mistakes: ${testMistakes}`
     );
-    await init();
+
+    inputElement.value = "";
+    setTimeout(async () => {
+        await init();
+    }, 1000);
 }
 
 function saveStatsForCurrentWord() {
