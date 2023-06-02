@@ -86,7 +86,7 @@ inputElement.addEventListener("input", async (e) => {
 function checkInput(key) {
     if (currentWordIndex === 0 && inputElement.value.length === 1) {
         startTime = performance.now();
-        footerElement.innerText = "";
+        footerElement.style.opacity = 0;
     }
 
     wordElements[currentWordIndex].classList.add("current");
@@ -133,6 +133,7 @@ async function finishTest() {
     endTime = performance.now();
     wpm = Math.round((numberOfWords / (endTime - startTime)) * 60000);
     let accuracy = Math.round(100 - (testMistakes / numberOfLetters) * 100);
+    footerElement.style.opacity = 1;
     footerElement.innerText = `You typed ${wpm} words per minute with ${accuracy}% accuracy`;
 
     inputElement.value = "";
@@ -167,8 +168,9 @@ function save() {
 function setHeader() {
     if (practiceWords.size > 0) {
         headerElement.innerText = `Words that need practice: ${practiceWords.size}`;
+        headerElement.style.opacity = 1;
     } else {
-        headerElement.innerText = "";
+        headerElement.style.opacity = 0;
     }
 }
 

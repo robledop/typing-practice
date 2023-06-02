@@ -31,6 +31,7 @@ body {
     align-self: start;
     position: relative;
     font-size: medium;
+    opacity: 0;
 }
 
 #footer {
@@ -38,6 +39,7 @@ body {
     align-self: start;
     position: relative;
     font-size: medium;
+    opacity: 0;
 }
 
 .complete {
