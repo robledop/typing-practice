@@ -19,9 +19,17 @@ const headerElement = document.querySelector("#header");
 const footerElement = document.querySelector("#footer");
 
 async function getFile(fileURL) {
-    let fileContent = await fetch(fileURL);
-    fileContent = await fileContent.text();
-    return fileContent.split("\n");
+    try {
+        let fileContent = await fetch(fileURL);
+        fileContent = await fileContent.text();
+        return fileContent.split("\n");
+    } catch (error) {
+        textElement.innerText = `Error: ${error.message}. Please try reloading the page.`;
+        textElement.classList.add("error");
+        inputElement.classList.add("hidden");
+        headerElement.classList.add("hidden");
+        footerElement.classList.add("hidden");
+    }
 }
 
 async function init() {

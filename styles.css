@@ -31,7 +31,7 @@ body {
     font-size: medium;
 }
 
-#footer{
+#footer {
     margin-top: 1rem;
     align-self: start;
     position: relative;
@@ -46,6 +46,10 @@ body {
     color: #df0505;
 }
 
+.error {
+    color: #df0505;
+}
+
 .mistake {
     text-decoration: line-through;
 }
@@ -54,8 +58,12 @@ body {
     text-decoration: underline;
 }
 
-.word{
+.word {
     margin-right: 8px;
     display: inline-block;
     position: relative;
+}
+
+.hidden {
+    display: none;
 }
