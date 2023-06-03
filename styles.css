@@ -73,3 +73,7 @@ body {
 .hidden {
     display: none;
 }
+
+.iewarning{
+    display: none;
+}

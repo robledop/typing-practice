@@ -17,13 +17,26 @@
 
 <body>
     <div class="main">
+        <div style="width: 800px;">
+            <p id="iewarning" class="hidden error">This website is not supported in Internet Explorer. Please use a
+                modern browser such as Google Chrome, Mozilla Firefox, or Microsoft Edge.
+            </p>
+        </div>
         <div id="header">Words that need practice</div>
         <div id="text">
             <span>Loading...</span>
         </div>
         <input type="text" id="input" placeholder="Start typing..." spellcheck="false">
         <div id="footer">footer</div>
-    </div>
+        </d>
+        <script>
+            if (window.document.documentMode) {
+                var warning = document.getElementById("iewarning");
+                warning.style.display = "block";
+                var inputElement = document.getElementById("input");
+                inputElement.style.display = "none";
+            }
+        </script>
 </body>
 
 </html>
