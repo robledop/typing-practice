@@ -67,7 +67,7 @@ await init();
 
 inputElement.addEventListener("input", async (e) => {
     if (e.data === " ") {
-        if (inputElement.value.trim() !== words[currentWordIndex]) {
+        if (inputElement.value.trimEnd() !== words[currentWordIndex]) {
             wordElements[currentWordIndex].classList.add("wrong");
             currentWordWrong = true;
         } else {
@@ -172,6 +172,6 @@ function setHeader() {
     }
 }
 
-document.querySelector("body").addEventListener("keydown", (e) => {
+document.querySelector("body").addEventListener("keydown", () => {
     inputElement.focus();
 });
