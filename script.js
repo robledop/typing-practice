@@ -1,5 +1,3 @@
-"use strict";
-
 let currentWordIndex = 0;
 let allWords;
 let words;
