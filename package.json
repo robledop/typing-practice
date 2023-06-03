@@ -1,0 +1,22 @@
+{
+  "name": "typing-practice",
+  "version": "1.0.0",
+  "description": "A very small web site that allows us to practice typing. It keeps track of our mistakes and makes us practice the words we mistyped.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robledop/typing-practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robledop/typing-practice/issues"
+  },
+  "homepage": "https://github.com/robledop/typing-practice#readme",
+  "devDependencies": {
+    "eslint": "^8.42.0"
+  }
+}
